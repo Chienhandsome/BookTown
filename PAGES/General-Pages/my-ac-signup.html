@@ -6,33 +6,51 @@
     <link rel="stylesheet" href="./../../STYLESHEET/signup.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Russo+One&family=Signika&display=swap" rel="stylesheet">
-    <script>
-        function validateForm(event) {
-            event.preventDefault(); // Ngăn chặn hành động mặc định của nút
-    
-            const email = document.getElementById('myemail').value;
-            const password = document.getElementById('mypass').value;
-    
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    
-            if (!emailRegex.test(email)) {
-                alert('Invalid email format!');
-                return false;
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Russo+One&family=Signika&display=swap"
+        rel="stylesheet">
+        <script>
+            function validateForm(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+        
+                const email = document.getElementById('myemail').value;
+                const password = document.getElementById('mypass').value;
+        
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const passwordRegex = /^(?=.*[A-Z]).*$/;
+        
+                if (!emailRegex.test(email)) {
+                    alert('Invalid email format!');
+                    return false;
+                }
+        
+                if (!passwordRegex.test(password)) {
+                    alert('Password must contain at least one letter, one number, and be at least 6 characters long!');
+                    return false;
+                }
+        
+                // Kiểm tra xem email đã tồn tại trong localStorage hay chưa
+                const storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const user = JSON.parse(storedUser);
+                    if (user.email === email) {
+                        alert('This email is already registered. Please log in instead.');
+                        return false;
+                    }
+                }
+        
+                // Lưu thông tin vào localStorage
+                const user = {
+                    email: email,
+                    password: password // Không nên lưu mật khẩu dạng plain text trong thực tế
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+        
+                alert('Sign-up successful!');
+                // Điều hướng về trang home
+                window.location.href = "./../../index.html";
+                return true;
             }
-    
-            if (!passwordRegex.test(password)) {
-                alert('Password must contain at least one letter, one number, and be at least 6 characters long!');
-                return false;
-            }
-    
-            alert('Sign-up successful!');
-            // Điều hướng về trang home
-            window.location.href = "./../../index.html";
-            return true;
-        }
-    </script>
+        </script>
 </head>
 
 <body>

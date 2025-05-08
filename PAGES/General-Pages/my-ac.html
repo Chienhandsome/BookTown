@@ -15,7 +15,7 @@
             const password = document.getElementById('mypass').value;
     
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+            const passwordRegex = /^(?=.*[A-Z]).*$/;
     
             if (!emailRegex.test(email)) {
                 alert('Invalid email format!');
@@ -24,6 +24,19 @@
     
             if (!passwordRegex.test(password)) {
                 alert('Password must contain at least one letter, one number, and be at least 6 characters long!');
+                return false;
+            }
+    
+            // Kiểm tra tài khoản trong localStorage
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                alert('No account found. Please sign up first!');
+                return false;
+            }
+    
+            const user = JSON.parse(storedUser);
+            if (user.email !== email || user.password !== password) {
+                alert('Incorrect email or password!');
                 return false;
             }
     
